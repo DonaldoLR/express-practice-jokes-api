@@ -19,7 +19,21 @@ const getJokes = async (req, res) => {
 	res.status(200).json(jokes);
 };
 // READ ONE
+const getJoke = async (req, res) => {
+	const { id } = req.params;
 
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: 'Joke was not found' });
+	}
+
+	const joke = await Joke.findById(id);
+
+	if (!joke) {
+		return res.status(400).json({ error: 'Joke was not found' });
+	}
+
+	res.status(200).json(joke);
+};
 // UPDATE
 
 // DELETE
@@ -27,4 +41,5 @@ const getJokes = async (req, res) => {
 module.exports = {
 	getJokes,
 	createJoke,
+	getJoke,
 };
