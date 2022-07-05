@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-
+const jokeRoutes = require('./routes/joke');
 // Routes
 // const jokesRoutes = require()
 
@@ -15,9 +15,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.get('/', (req, res) => {
-	res.status(200).json({ message: 'connected' });
-});
+app.use('/api/jokes', jokeRoutes);
 
 mongoose
 	.connect(process.env.MONGO_URI)
