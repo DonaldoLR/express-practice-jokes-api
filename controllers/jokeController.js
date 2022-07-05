@@ -35,11 +35,28 @@ const getJoke = async (req, res) => {
 	res.status(200).json(joke);
 };
 // UPDATE
+const updateJoke = async (req, res) => {
+	const { id } = req.params;
 
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: 'Joke was not found' });
+	}
+
+	const updatedJoke = await Joke.findByIdAndUpdate(id, {
+		...req.body,
+	});
+
+	if (!updateJoke) {
+		return res.status(500).json({ error: 'Unable to update joke' });
+	}
+
+	res.status(200).json({ message: 'Joke updated', updatedJoke });
+};
 // DELETE
 
 module.exports = {
 	getJokes,
 	createJoke,
 	getJoke,
+	updateJoke,
 };
