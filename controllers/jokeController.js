@@ -53,10 +53,26 @@ const updateJoke = async (req, res) => {
 	res.status(200).json({ message: 'Joke updated', updatedJoke });
 };
 // DELETE
+const deleteJoke = async (req, res) => {
+	const { id } = req.params;
+
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: 'Joke was not found' });
+	}
+
+	const deletedJoke = await Joke.findByIdAndDelete(id);
+
+	if (!deletedJoke) {
+		return res.status(500).json({ error: 'Could not delete joke' });
+	}
+
+	res.status(200).json({ message: 'Joke deleted', deletedJoke });
+};
 
 module.exports = {
 	getJokes,
 	createJoke,
 	getJoke,
 	updateJoke,
+	deleteJoke,
 };
